@@ -142,6 +142,8 @@ def exit(indicators,signal,exit_position,config):
 
 ## 样例一：海龟交易系统
 
+### 说明
+
 海龟交易系统的执行流程，可以用文字表述为：
 1. 检查价格是否突破了20日或55日的唐奇安通道；
     1. 如果没有发生突破，记为状态S0；
@@ -190,7 +192,8 @@ def exit(indicators,signal,exit_position,config):
 
 > 头寸规模单位=账户的1%/市场的绝对波动幅度
 
-### 输入样例
+### 代码
+
 > signal.py
 ```Python3 
 ## signal.py
