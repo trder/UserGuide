@@ -81,7 +81,7 @@ def exit_signal(indicators,config):
     indicators：k线与指标数据
     config：配置信息
     返回值：方向(买入buy卖出sell)，信号强度
-    注：入市时的买入对应退出时的卖出
+    注：入市时的买入操作对应退出时的卖出操作
     '''
     return "sell",0.5
 ```
@@ -99,7 +99,7 @@ def entry(indicators,signal,balance,cur_position,next_position,config):
     config：配置信息
     返回值：操作结果(200表示成功，500表示失败)与操作后的新的头寸信息
     '''
-    return 200,position
+    return 200,cur_position
 ```
 position.py
 ```Python3 
@@ -118,15 +118,15 @@ exit.py
 ```Python3
 ## exit.py
 # 退出脚本
-def exit(indicators,signal,cur_position,next_position,config):
+def exit(indicators,signal,exit_position,config):
     '''
     indicators：k线与指标数据
     signal：市场信号
-    cur_position：当前头寸
+    exit_position：要退出的头寸
     config：配置信息
-    返回值：操作结果(200表示成功，500表示失败)与操作后的新的头寸信息
+    返回值：操作结果(200表示成功，500表示失败)
     '''
-    return 200,position
+    return 200
 ```
 config.json
 ```json 
