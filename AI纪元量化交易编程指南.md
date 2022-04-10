@@ -137,9 +137,9 @@ config.json
 }
 ```
 
-## 输入样例
+## 样例一：海龟交易系统
 
-### 样例一：海龟交易系统
+### 输入样例
 signal.py
 ```Python3 
 ## signal.py
