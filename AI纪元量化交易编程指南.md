@@ -138,4 +138,5 @@ config.json
 ```
 
 AI纪元量化平台项目地址：https://github.com/trder/
+
 API参考文档：https://github.com/trder/APIReference
