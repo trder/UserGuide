@@ -106,6 +106,7 @@ def entry(indicators,signal,balance,cur_position,next_position,config):
 position.py
 ```Python3 
 #position.py
+# 头寸计算
 def position(indicators,balance,cur_position,config):
     '''
     indicators: k线与指标数据
@@ -140,6 +141,16 @@ config.json
 ```
 
 ## 样例一：海龟交易系统
+
+海龟交易系统的执行流程，可以用文字表述为：
+1. 检查价格是否突破了20日或55日的唐奇安通道；
+    1. 如果没有发生突破，记为状态S0；
+    2. 如果突破了20日的唐奇安通道；
+        1. 如果是向上突破，记为状态S10；
+        2. 如果是向下突破，记为状态S20。
+    4. 如果突破了55日的唐奇安通道：
+        1. 如果是向上突破，记为状态S30；
+        2. 如果是向下突破，记为状态S40。
 
 ### 输入样例
 signal.py
