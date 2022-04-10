@@ -65,7 +65,7 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 
 ## 输入模版
 
-signal.py
+> signal.py
 ```Python3 
 ## signal.py
 #入市信号
@@ -87,7 +87,7 @@ def exit_signal(indicators,config):
     '''
     return "sell",0.5
 ```
-entry.py
+> entry.py
 ```Python3 
 ## entry.py
 # 入市脚本
@@ -103,7 +103,7 @@ def entry(indicators,signal,balance,cur_position,next_position,config):
     '''
     return 200,cur_position
 ```
-position.py
+> position.py
 ```Python3 
 #position.py
 # 头寸计算
@@ -117,7 +117,7 @@ def position(indicators,balance,cur_position,config):
     '''
     return 0.0
 ```
-exit.py
+> exit.py
 ```Python3
 ## exit.py
 # 退出脚本
@@ -131,7 +131,7 @@ def exit(indicators,signal,exit_position,config):
     '''
     return 200
 ```
-config.json
+> config.json
 ```json 
 {
     "risk_factor":1.0
@@ -167,9 +167,12 @@ config.json
             2. 如果突破了通道-0.5ATR，记为状态S41；
             3. 如果突破了通道-1.0ATR，记为状态S42；
             4. 如果突破了通道-1.5ATR，记为状态S43；
+2. 判断上一次突破是否是亏损型突破？
+3. 计算头寸单位规模
+4. 检查价格是否回到突破点
 
 ### 输入样例
-signal.py
+> signal.py
 ```Python3 
 ## signal.py
 #入市信号
@@ -191,7 +194,7 @@ def exit_signal(indicators,config):
     '''
     return "sell",0.5
 ```
-entry.py
+> entry.py
 ```Python3 
 ## entry.py
 # 入市脚本
@@ -207,7 +210,7 @@ def entry(indicators,signal,balance,cur_position,next_position,config):
     '''
     return 200,cur_position
 ```
-position.py
+> position.py
 ```Python3 
 #position.py
 def position(indicators,balance,cur_position,config):
@@ -220,7 +223,7 @@ def position(indicators,balance,cur_position,config):
     '''
     return 0.0
 ```
-exit.py
+> exit.py
 ```Python3
 ## exit.py
 # 退出脚本
@@ -234,7 +237,7 @@ def exit(indicators,signal,exit_position,config):
     '''
     return 200
 ```
-config.json
+> config.json
 ```json 
 {
     "risk_factor":1.0
