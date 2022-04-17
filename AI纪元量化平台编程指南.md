@@ -1,4 +1,4 @@
-# AI纪元量化交易编程指南
+# AI纪元量化平台编程指南
 
 通过简单编程，创建你的第一个量化交易系统。
 
@@ -228,6 +228,6 @@ class trading:
 
 > 头寸规模单位=账户的1%/市场的绝对波动幅度
 
-AI纪元量化平台项目地址：https://github.com/trder/
+### 代码
 
-API参考文档：https://github.com/trder/APIReference
+见API参考文档：https://github.com/trder/APIReference
