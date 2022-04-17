@@ -67,11 +67,17 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 ## 元交易系统
 
 元交易系统是一种高度抽象的交易系统，当我描述元系统的时候，实际上我描述了所有AI纪元量化平台支持的所有量化交易系统。
+
 元交易系统的具体执行过程如下：
+
 循环调用entry_signal(exchange,symbol)获取交易所exchange中市场symbol的当前入市信号sign（介于[-1,1]之间）和订单类型otype。
+
 当sign大于0.5（做多）或小于-0.5（做空）时调用entry_position(exchange,symbol,sign,otype)获取当前可交易的头寸大小pos（以USD为单位，正数做多，负数做空）。
+
 当pos大于最小订单金额min_order时，调用entry_order(exchange,symbol,pos,otype)创建订单order，并将order添加到order_list中。
+
 循环order_list，使用order调用exit_signal(order)检查订单order的退出信号exit_sign（介于[0,1]之间）和退出类型etype。
+
 当退出信号大于0.5时调用exit_order(order,etype)执行退出操作，并将order从order_list中删除，添加到order_history中。
 
 ## 输入模版（未完成）
