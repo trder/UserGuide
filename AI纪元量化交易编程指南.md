@@ -66,7 +66,7 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 
 ## 元交易系统
 
-元交易系统执行流程：循环调用entry_signal(exchange,symbol)获取交易所exchange中市场symbol的当前入市信号sign（介于[-1~1]之间）和订单类型otype。当sign大于0.5（做多）或小于-0.5（做空）时调用entry_position(exchange,symbol,sign,otype)获取当前可交易的头寸大小pos（以USD为单位，正数做多，负数做空）。当pos大于最小订单金额min_order时，调用entry_order(exchange,symbol,pos,otype)创建订单order。循环调用exit_signal(order)检查订单order的退出信号exit_sign（介于[0~1]之间）和退出类型etype。当退出信号大于0.5时调用exit_order(order,etype)执行退出操作。
+元交易系统执行流程：循环调用entry_signal(exchange,symbol)获取交易所exchange中市场symbol的当前入市信号sign（介于[-1,1]之间）和订单类型otype。当sign大于0.5（做多）或小于-0.5（做空）时调用entry_position(exchange,symbol,sign,otype)获取当前可交易的头寸大小pos（以USD为单位，正数做多，负数做空）。当pos大于最小订单金额min_order时，调用entry_order(exchange,symbol,pos,otype)创建订单order。循环调用exit_signal(order)检查订单order的退出信号exit_sign（介于[0,1]之间）和退出类型etype。当退出信号大于0.5时调用exit_order(order,etype)执行退出操作。
 
 
 ## 输入模版（未完成）
