@@ -70,21 +70,25 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 
 元交易系统的具体执行过程如下：
 
-循环调用entry_signal(exchange,symbol)获取交易所exchange中市场symbol的当前入市信号sign（介于[-1,1]之间）、订单价格（otype为限价单时）和订单类型otype（otype分为限价单和市价单）。
+循环调用entry_signal(exchange,symbol)获取交易所exchange中市场symbol的当前入市策略strategy。
 
-当sign大于0.5（做多）或小于-0.5（做空）时调用entry_position(exchange,symbol,sign,otype)获取当前可交易的头寸大小pos（以USD为单位，正数做多，负数做空）。
+strategy中包含信号sign（介于[0,1]之间，超过0.5表示需要执行交易）、订单价格头寸列表price_pos_list（包含价格price、订单类型otype和头寸大小pos，订单类型otype分为限价单和市价单,头寸大小以USD为单位，正数做多，负数做空）。
 
-当pos大于最小订单金额min_order时，调用entry_order(exchange,symbol,pos,otype)创建订单order，并将order添加到order_list中。
+当strategy.sign大于0.5且strategy.price_pos_list.pos大于最小订单金额min_order时，调用execute_entry(exchange,symbol,strategy)创建订单order_list，并将order_list添加到order_queue中。
 
-需要注意的是：订单order并不会立即执行（即使otype是市价单），而是会在接近市价的位置挂单，然后根据市场价格的波动实时调整价格，使订单价格始终保持在最容易成交的位置，一直监控订单的状态order.status，直到成交为止。
+需要注意的是：order_queue中的订单并不会立即执行（即使otype是市价单），而是会在接近市价的位置挂单，然后根据市场价格的波动实时调整价格，使订单价格始终保持在最容易成交的位置，一直监控订单的状态order.status，直到全部执行为止。
 
-枚举order_list中的order，调用exit_signal(order)，检查订单order的退出信号exit_sign（介于[0,1]之间）和退出类型etype（etype分为信号退出或止损退出）。
+枚举order_queue中的order，调用exit_signal(order)，检查订单order的退出信号exit_sign（介于[0,1]之间）和退出类型etype（etype分为信号退出或止损退出）。
+
+当退出信号大于0.5时调用execute_exit(order,etype)执行退出操作，并将order从order_list中删除，添加到order_history中。
+
+对于order.status为未执行的订单，直接取消订单。
+
+对于order.status为全部执行或部分执行的订单，先取消未执行的部分，对于已经执行的部分：
 
 对于etype为"止损退出"的订单，会在前30秒内使用动态调整的限价单执行，30秒后将剩余部分转为市价单全部执行。
 
 对于etype为"信号退出"的订单，会一直使用动态调整的限价单执行。
-
-当退出信号大于0.5时调用exit_order(order,etype)执行退出操作，并将order从order_list中删除，添加到order_history中。
 
 ## 输入模版（未完成）
 
