@@ -133,8 +133,24 @@ class trading:
         return ans
         
     def execute_entry(exchange:string,symbol:string,strategy:"strategy") -> order:
-        ans = order()
-        return ans
+        order = {
+        "exchange":"bitfinex", #交易所
+        "symbol":"BTC/USDT", #币种
+        "side":"buy", #方向：做多buy或做空sell
+        "order_id":"xxxxxxxxxxxxx", #订单编号
+        "entry_price":50000.0, #平均成交价格
+        "best_price":50010.0, #盈利最大价格
+        "stop_price":49010.0, #止损价格(对于动态止损策略，stop_price会根据best_price动态变化)
+        "total_amount":"0.1", #数量
+        "executed_amount":"0.04", #已执行数量
+        "unexecuted_amount":"0.06", #未执行数量
+        "status":1, #0未执行;1部分执行;2全部执行
+        "timestamp":1650176916.000, #订单创建时间（秒）
+        "fees":2.0, #已产生的手续费（美元）
+        "ATR": 2500.0, #ATR
+        "ATRP": 5.0 #ATR%
+        }
+        return order
         
     def exit_signal(order:"order") -> tuple:
         return 0.5, 0
