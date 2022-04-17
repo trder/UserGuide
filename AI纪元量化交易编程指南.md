@@ -84,7 +84,9 @@ order = {
 "exchange":"bitfinex", #交易所
 "symbol":"BTC/USDT", #币种
 "side":"buy", #方向
-"price":50000.0, #平均成交价格
+"entry_price":50000.0, #平均成交价格
+"best_price":50010.0, #盈利最大价格
+"stop_price":49010.0, #止损价格(对于动态止损策略，stop_price会根据best_price动态变化)
 "total_amount":"0.1", #数量
 "executed_amount":"0.04", #已执行数量
 "unexecuted_amount":"0.06", #未执行数量
