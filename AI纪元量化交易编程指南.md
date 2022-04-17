@@ -80,16 +80,16 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 当`strategy.sign`大于0.5且`strategy.pos`大于最小订单金额`min_order`时(`min_order`默认为100 USD，可在`config.json`中设置)，调用`execute_entry(exchange,symbol,strategy)`创建订单`order`，并将`order`添加到`order_queue`中。
 
 ```Python3
-#strategy策略类
-class strategy:
-    def __init__(self,sign,side,pos):
-        self.sign = sign #信号强度
-        self.side = side #方向：做多buy或做空sell
-        self.pos = pos #头寸大小：（以USD为单位）
+#strategy策略对象
+strategy = {
+"sign":0.5, #信号强度
+"side":"buy" #方向：做多buy或做空sell
+"pos":500.0 #头寸大小：（以USD为单位）
+}
 ```
 
 ```Python3
-#order对象
+#order订单对象
 order = {
 "exchange":"bitfinex", #交易所
 "symbol":"BTC/USDT", #币种
@@ -128,11 +128,17 @@ order = {
 > trading.py
 ```Python3
 class trading:
-    def entry_signal(exchange:string,symbol:string) -> "strategy":
-        ans = strategy(0.5,"buy",500.0)
-        return ans
+    def entry_signal(exchange:string,symbol:string) -> dict:
+        #strategy策略对象
+        strategy = {
+        "sign":0.5, #信号强度
+        "side":"buy" #方向：做多buy或做空sell
+        "pos":500.0 #头寸大小：（以USD为单位）
+        }
+        return strategy
         
-    def execute_entry(exchange:string,symbol:string,strategy:"strategy") -> order:
+    def execute_entry(exchange:string,symbol:string,strategy:"strategy") -> dict:
+        #order订单对象
         order = {
         "exchange":"bitfinex", #交易所
         "symbol":"BTC/USDT", #币种
@@ -153,7 +159,9 @@ class trading:
         return order
         
     def exit_signal(order:"order") -> tuple:
-        return 0.5, 0
+        exit_sign = 0.5 #退出信号强度（介于[0,1]之间）
+        etype = 0 #退出类型：0信号退出 1止损退出
+        return exit_sign, etype
         
     def execute_exit(order:"order",etype:int) -> None:
         return
