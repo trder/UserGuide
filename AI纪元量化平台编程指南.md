@@ -231,3 +231,7 @@ class trading:
 ### 代码
 
 见API参考文档：https://github.com/trder/APIReference
+
+## 参考
+原文地址：[AI纪元量化平台编程指南](
+https://github.com/trder/UserGuide/blob/main/AI%E7%BA%AA%E5%85%83%E9%87%8F%E5%8C%96%E5%B9%B3%E5%8F%B0%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97.md)
