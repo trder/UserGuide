@@ -94,6 +94,7 @@ order = {
 "exchange":"bitfinex", #交易所
 "symbol":"BTC/USDT", #币种
 "side":"buy", #方向：做多buy或做空sell
+"order_id":"xxxxxxxxxxxxx", #订单编号
 "entry_price":50000.0, #平均成交价格
 "best_price":50010.0, #盈利最大价格
 "stop_price":49010.0, #止损价格(对于动态止损策略，stop_price会根据best_price动态变化)
