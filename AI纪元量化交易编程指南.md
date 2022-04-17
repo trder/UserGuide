@@ -80,11 +80,20 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 当`strategy.sign`大于0.5且`strategy.pos`大于最小订单金额`min_order`时(`min_order`默认为100 USD，可在`config.json`中设置)，调用`execute_entry(exchange,symbol,strategy)`创建订单`order`，并将`order`添加到`order_queue`中。
 
 ```Python3
-#order数据结构
+#strategy策略类
+class strategy:
+    def __init__(self,sign,side,pos):
+        self.sign = sign #信号强度
+        self.side = side #方向：做多buy或做空sell
+        self.pos = pos #头寸大小：（以USD为单位）
+```
+
+```Python3
+#order对象
 order = {
 "exchange":"bitfinex", #交易所
 "symbol":"BTC/USDT", #币种
-"side":"buy", #方向
+"side":"buy", #方向：做多buy或做空sell
 "entry_price":50000.0, #平均成交价格
 "best_price":50010.0, #盈利最大价格
 "stop_price":49010.0, #止损价格(对于动态止损策略，stop_price会根据best_price动态变化)
@@ -101,7 +110,7 @@ order = {
 
 `注意：order_queue中的订单并不会立即执行，而是会在接近市价的位置挂单，并根据市场价格的波动实时调整价格，使订单价格始终保持在最容易成交的位置，一直监控订单的状态order.status，直到全部执行为止。`
 
-枚举`order_queue`中的`order`，调用`exit_signal(order)`，检查订单`order`的退出信号`exit_sign`（介于[0,1]之间）和退出类型`etype`（etype分为信号退出或止损退出）。
+枚举`order_queue`中的`order`，调用`exit_signal(order)`，检查订单`order`的退出信号`exit_sign`（介于[0,1]之间）和退出类型`etype`（etype分为0信号退出或1止损退出）。
 
 当退出信号大于0.5时调用`execute_exit(order,etype)`执行退出操作，并将`order`从`order_queue`中删除，添加到`order_history`中。
 
@@ -113,22 +122,27 @@ order = {
 
 - 对于`etype`为"信号退出"的订单，会一直使用动态调整的限价单执行。
 
-## 输入模版（未完成）
+## 输入模版
 
 > trading.py
 ```Python3
 class trading:
-    def entry_signal(exchange,symbol) -> strategy:
-        pass
-    def execute_entry(exchange,symbol,strategy) -> order:
-        pass
-    def exit_signal(order) -> tuple:
-        pass
-    def execute_exit(order,etype) -> None:
-        pass
+    def entry_signal(exchange:string,symbol:string) -> "strategy":
+        ans = strategy(0.5,"buy",500.0)
+        return ans
+        
+    def execute_entry(exchange:string,symbol:string,strategy:"strategy") -> order:
+        ans = order()
+        return ans
+        
+    def exit_signal(order:"order") -> tuple:
+        return 0.5, 0
+        
+    def execute_exit(order:"order",etype:int) -> None:
+        return
 ```
 > config.json
-```json 
+```json
 {
     "min_order":100.0,
     "risk_factor":1.0
