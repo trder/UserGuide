@@ -80,9 +80,9 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 
 枚举order_list中的order，调用exit_signal(order)，检查订单order的退出信号exit_sign（介于[0,1]之间）和退出类型etype（etype分为信号退出或止损退出）。
 
-对于etype为"止损退出"的订单，会在前30秒内使用限价单执行，30秒后将剩余部分转为市价单全部执行。
+对于etype为"止损退出"的订单，会在前30秒内使用动态调整的限价单执行，30秒后将剩余部分转为市价单全部执行。
 
-对于etype为"信号退出"的订单，会一直使用限价单执行。
+对于etype为"信号退出"的订单，会一直使用动态调整的限价单执行。
 
 当退出信号大于0.5时调用exit_order(order,etype)执行退出操作，并将order从order_list中删除，添加到order_history中。
 
