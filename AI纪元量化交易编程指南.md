@@ -66,17 +66,37 @@ AI纪元量化平台采用主流的Python3语言来定义交易系统，文章�
 
 ## 元交易系统
 
-元交易系统是一个高度抽象的交易系统，当我描述元系统的时候，实际上我描述了所有被AI纪元量化平台支持的所有量化交易系统。
+元交易系统是一个高度抽象的交易系统，当我描述元系统的时候，实际上我描述了所有被AI纪元量化平台所支持的交易系统。
+
+`需要注意的是：为了保持元交易系统的简洁性，它将不支持一次创建大量订单的网格交易系统，它的每个入市信号最多只对应单个订单。`
 
 元交易系统的具体执行过程如下：
 
 循环调用entry_signal(exchange,symbol)获取交易所exchange中市场symbol的当前入市策略strategy。
 
-strategy中包含信号sign（介于[0,1]之间，超过0.5表示需要执行交易）、订单价格头寸列表price_pos_list（包含价格price、订单类型otype和头寸大小pos，订单类型otype分为限价单和市价单,头寸大小以USD为单位，正数做多，负数做空）。
+strategy中包含信号sign（介于[0,1]之间，超过0.5表示需要执行交易）方向side（做多buy或做空sell）和头寸大小pos（以USD为单位）。
 
-当strategy.sign大于0.5且strategy.price_pos_list.pos大于最小订单金额min_order时，调用execute_entry(exchange,symbol,strategy)创建订单order_list，并将order_list添加到order_queue中。
+当strategy.sign大于0.5且strategy.pos大于最小订单金额min_order时，调用execute_entry(exchange,symbol,strategy)创建订单order，并将order添加到order_queue中。
 
-需要注意的是：order_queue中的订单并不会立即执行（即使otype是市价单），而是会在接近市价的位置挂单，然后根据市场价格的波动实时调整价格，使订单价格始终保持在最容易成交的位置，一直监控订单的状态order.status，直到全部执行为止。
+```Python3
+#order数据结构
+order = {
+"exchange":"bitfinex", #交易所
+"symbol":"BTC/USDT", #币种
+"side":"buy", #方向
+"price":50000.0, #平均成交价格
+"total_amount":"0.1", #数量
+"executed_amount":"0.04", #已执行数量
+"unexecuted_amount":"0.06", #未执行数量
+"status":1, #0未执行;1部分执行;2全部执行
+"timestamp":1650176916.000, #订单创建时间（秒）
+"fees":2.0, #已产生的手续费（美元）
+"ATR": 2500.0, #ATR
+"ATRP": 5.0 #ATR%
+}
+```
+
+`需要注意的是：order_queue中的订单并不会立即执行，而是会在接近市价的位置挂单，并根据市场价格的波动实时调整价格，使订单价格始终保持在最容易成交的位置，一直监控订单的状态order.status，直到全部执行为止。`
 
 枚举order_queue中的order，调用exit_signal(order)，检查订单order的退出信号exit_sign（介于[0,1]之间）和退出类型etype（etype分为信号退出或止损退出）。
 
